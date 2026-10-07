@@ -130,16 +130,21 @@ function cargarOpiniones() {
     renderizarPagina();
 
     if (URL_BASE_DATOS && URL_BASE_DATOS.startsWith("http")) {
-        fetch(URL_BASE_DATOS)
+        // Agregamos Date.now() para forzar a consultar la nube siempre en tiempo real
+        const urlSinCache = URL_BASE_DATOS + (URL_BASE_DATOS.includes("?") ? "&" : "?") + "t=" + Date.now();
+
+        fetch(urlSinCache)
             .then(res => res.json())
             .then(data => {
                 let remotas = Array.isArray(data) ? data : [];
                 respuestasGlobales = combinarRespuestas(remotas, locales);
                 renderizarPagina();
             })
-            .catch(() => {
-                // Si la red falla, mantiene lo almacenado localmente
+            .catch(error => {
+                console.error("Error al obtener opiniones de Google Sheets:", error);
             });
+    }
+}
     }
 }
 
