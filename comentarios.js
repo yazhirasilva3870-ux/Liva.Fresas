@@ -1,5 +1,5 @@
 // ⚠️ REEMPLAZA ESTO CON TU URL REAL DE GOOGLE APPS SCRIPT (la que termina en /exec)
-const URL_BASE_DATOS = "PEGA_AQUI_TU_URL_DE_GOOGLE";
+const URL_BASE_DATOS = "Phttps://script.google.com/macros/s/AKfycbzv3GdnUzT24IC99RWxCjpnbyeVe9-tU1qlzu_1WnkuKvR_oE0POheOtgUgehEPSYDP/exec";
 
 let idiomaActual = "es";
 let respuestasGlobales = [];
