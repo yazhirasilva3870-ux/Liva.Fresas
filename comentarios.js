@@ -1,5 +1,5 @@
-// URL de tu Google Apps Script
-const URL_BASE_DATOS = "https://script.google.com/macros/s/AKfycbzEbg7W4lwcpbxg_H0QqQjTuf2c9Yvli85IMjwUil8p/dev";
+// ⚠️ REEMPLAZA ESTO CON TU URL REAL DE GOOGLE APPS SCRIPT (la que termina en /exec)
+const URL_BASE_DATOS = "PEGA_AQUI_TU_URL_DE_GOOGLE";
 
 let idiomaActual = "es";
 let respuestasGlobales = [];
@@ -72,6 +72,7 @@ function renderizarPagina() {
         return;
     }
 
+    // Mostrar de la más reciente a la más antigua
     respuestasGlobales.slice().reverse().forEach(function(r) {
         let tarjeta = document.createElement("div");
         tarjeta.className = "tarjeta-opinion";
@@ -112,27 +113,34 @@ function renderizarPagina() {
 }
 
 function cargarOpiniones() {
-    let contenedor = document.getElementById("contenedor-opiniones");
-    let t = textos[idiomaActual];
+    // 1. Cargar respuestas guardadas en este navegador de inmediato
+    let locales = JSON.parse(localStorage.getItem("respuestasEncuesta")) || [];
+    respuestasGlobales = locales;
+    renderizarPagina();
 
-    if (contenedor) {
-        contenedor.innerHTML = `<div class="tarjeta-vacia"><p>${t.cargando}</p></div>`;
-    }
-
+    // 2. Si hay URL de Google configurada, intentar sincronizar con la nube
     if (URL_BASE_DATOS && URL_BASE_DATOS !== "PEGA_AQUI_TU_URL_DE_GOOGLE" && URL_BASE_DATOS.startsWith("http")) {
         fetch(URL_BASE_DATOS)
             .then(res => res.json())
             .then(data => {
-                respuestasGlobales = Array.isArray(data) ? data : [];
-                renderizarPagina();
+                if (Array.isArray(data) && data.length > 0) {
+                    // Fusionar datos evitando duplicados exactos
+                    let combinadas = [...data];
+                    locales.forEach(loc => {
+                        let existe = combinadas.some(rem => 
+                            rem.nombre === loc.nombre && 
+                            rem.comentario === loc.comentario && 
+                            rem.fechaRegistro === loc.fechaRegistro
+                        );
+                        if (!existe) combinadas.push(loc);
+                    });
+                    respuestasGlobales = combinadas;
+                    renderizarPagina();
+                }
             })
             .catch(() => {
-                respuestasGlobales = JSON.parse(localStorage.getItem("respuestasEncuesta")) || [];
-                renderizarPagina();
+                // Si falla la red, mantiene las respuestas locales
             });
-    } else {
-        respuestasGlobales = JSON.parse(localStorage.getItem("respuestasEncuesta")) || [];
-        renderizarPagina();
     }
 }
 
