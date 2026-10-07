@@ -1,7 +1,7 @@
 // =========================================================
 // CONFIGURACIÓN: URL DE TU GOOGLE APPS SCRIPT
 // =========================================================
-const URL_BASE_DATOS = "https://script.google.com/macros/s/AKfycbzEbg7W4lwcpbxg_H0QqQjTuf2c9Yvli85IMjwUil8p/dev"; 
+const URL_BASE_DATOS = "https://script.google.com/macros/s/AKfycbzv3GdnUzT24IC99RWxCjpnbyeVe9-tU1qlzu_1WnkuKvR_oE0POheOtgUgehEPSYDP/exec"; 
 
 // =========================================================
 // TRADUCCIONES PARA INDEX.HTML
