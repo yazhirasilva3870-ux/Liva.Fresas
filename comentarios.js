@@ -1,5 +1,5 @@
 // URL de tu Google Apps Script
-const URL_BASE_DATOS = "https://script.google.com/macros/s/AKfycbzEbg7W4lwcpbxg_H0QqQjTuf2c9Yvli85IMjwUil8p/exec";
+const URL_BASE_DATOS = "https://script.google.com/macros/library/d/1oC8CjnouhKSIIyI9k5wH91QUW8rUYRilo_fPlxrwUjdil1zUaJHm3grX/7";
 
 let idiomaActual = "es";
 let respuestasGlobales = [];
