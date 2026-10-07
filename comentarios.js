@@ -1,5 +1,5 @@
-// ⚠️ REEMPLAZA ESTO CON TU URL REAL DE GOOGLE APPS SCRIPT (la que termina en /exec)
-const URL_BASE_DATOS = "https://script.google.com/macros/s/AKfycbzv3GdnUzT24IC99RWxCjpnbyeVe9-tU1qlzu_1WnkuKvR_oE0POheOtgUgehEPSYDP/exec";
+// URL de tu Google Apps Script
+const URL_BASE_DATOS = "https://script.google.com/macros/s/AKfycbzEbg7W4lwcpbxg_H0QqQjTuf2c9Yvli85IMjwUil8p/exec";
 
 let idiomaActual = "es";
 let respuestasGlobales = [];
@@ -72,7 +72,6 @@ function renderizarPagina() {
         return;
     }
 
-    // Mostrar de la más reciente a la más antigua
     respuestasGlobales.slice().reverse().forEach(function(r) {
         let tarjeta = document.createElement("div");
         tarjeta.className = "tarjeta-opinion";
@@ -112,34 +111,34 @@ function renderizarPagina() {
     });
 }
 
+function combinarRespuestas(remotas, locales) {
+    let combinadas = [...remotas];
+    locales.forEach(loc => {
+        let existe = combinadas.some(rem => 
+            rem.nombre === loc.nombre && 
+            rem.comentario === loc.comentario && 
+            rem.fechaRegistro === loc.fechaRegistro
+        );
+        if (!existe) combinadas.push(loc);
+    });
+    return combinadas;
+}
+
 function cargarOpiniones() {
-    // 1. Cargar respuestas guardadas en este navegador de inmediato
     let locales = JSON.parse(localStorage.getItem("respuestasEncuesta")) || [];
     respuestasGlobales = locales;
     renderizarPagina();
 
-    // 2. Si hay URL de Google configurada, intentar sincronizar con la nube
-    if (URL_BASE_DATOS && URL_BASE_DATOS !== "PEGA_AQUI_TU_URL_DE_GOOGLE" && URL_BASE_DATOS.startsWith("http")) {
+    if (URL_BASE_DATOS && URL_BASE_DATOS.startsWith("http")) {
         fetch(URL_BASE_DATOS)
             .then(res => res.json())
             .then(data => {
-                if (Array.isArray(data) && data.length > 0) {
-                    // Fusionar datos evitando duplicados exactos
-                    let combinadas = [...data];
-                    locales.forEach(loc => {
-                        let existe = combinadas.some(rem => 
-                            rem.nombre === loc.nombre && 
-                            rem.comentario === loc.comentario && 
-                            rem.fechaRegistro === loc.fechaRegistro
-                        );
-                        if (!existe) combinadas.push(loc);
-                    });
-                    respuestasGlobales = combinadas;
-                    renderizarPagina();
-                }
+                let remotas = Array.isArray(data) ? data : [];
+                respuestasGlobales = combinarRespuestas(remotas, locales);
+                renderizarPagina();
             })
             .catch(() => {
-                // Si falla la red, mantiene las respuestas locales
+                // Si la red falla, mantiene lo almacenado localmente
             });
     }
 }
@@ -148,19 +147,8 @@ document.addEventListener("DOMContentLoaded", function() {
     let btnEs = document.getElementById("espanol");
     let btnEn = document.getElementById("ingles");
 
-    if (btnEs) {
-        btnEs.onclick = function() {
-            idiomaActual = "es";
-            renderizarPagina();
-        };
-    }
-
-    if (btnEn) {
-        btnEn.onclick = function() {
-            idiomaActual = "en";
-            renderizarPagina();
-        };
-    }
+    if (btnEs) btnEs.onclick = () => { idiomaActual = "es"; renderizarPagina(); };
+    if (btnEn) btnEn.onclick = () => { idiomaActual = "en"; renderizarPagina(); };
 
     cargarOpiniones();
 });
