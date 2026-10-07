@@ -1,159 +1,198 @@
-// ⚠️ REEMPLAZA CON TU URL DE GOOGLE APPS SCRIPT (la que termina en /exec)
-const URL_BASE_DATOS = "https://script.google.com/macros/s/AKfycbzv3GdnUzT24IC99RWxCjpnbyeVe9-tU1qlzu_1WnkuKvR_oE0POheOtgUgehEPSYDP/exec";
+// URL de tu Google Apps Script
+const URL_BASE_DATOS = "https://script.google.com/macros/s/AKfycbzv3GdnUzT24IC99RWxCjpnbyeVe9-tU1qlzu_1WnkuKvR_oE0POheOtgUgehEPSYDP/exec"; 
 
-let idiomaActual = "es";
-let respuestasGlobales = [];
-
-const textos = {
+const traducciones = {
     es: {
-        titulo: "Opiniones de nuestros clientes 🍓",
-        subtitulo: "Aquí puedes ver lo que las personas opinan sobre su experiencia en Liva Fresas.",
-        btnVolver: "📋 Volver a la encuesta",
-        sinOpiniones: "Aún no hay opiniones registradas. ¡Sé la primera persona en enviar una! 🍓",
-        cargando: "Cargando opiniones... 🍓",
-        anonimo: "Anónimo",
-        fechaVisita: "Fecha de visita",
-        comida: "Comida",
-        local: "El local",
-        atencion: "Atención",
-        general: "General",
-        recomendacion: "Recomendación",
-        registradoEl: "Registrado el",
-        sinComentario: "Sin comentario"
+        tituloEncuesta: "Cuéntanos sobre tu experiencia",
+        tituloVisita: "Sobre tu visita",
+        labelNombre: "Nombre (opcional)",
+        phNombre: "Escribe tu nombre...",
+        labelFecha: "Fecha de visita",
+        tituloComida: "La comida",
+        preguntaComida: "¿Cómo calificarías la calidad de nuestros productos?",
+        tituloLocal: "El local",
+        preguntaLocal: "¿Cómo calificarías el ambiente, la limpieza y la comodidad?",
+        tituloAtencion: "Atención al cliente",
+        preguntaAtencion: "¿Cómo calificarías la amabilidad y rapidez de nuestra atención?",
+        tituloGeneral: "Experiencia general",
+        preguntaGeneral: "En general, ¿cómo fue tu experiencia en Liva Fresas?",
+        tituloNps: "Recomendación",
+        preguntaNps: "¿Qué tan probable es que recomiendes Liva Fresas a otra persona?",
+        tituloComentario: "Cuéntanos más",
+        labelComentario: "¿Hay algo que quieras contarnos?",
+        phComentario: "Escribe tu opinión aquí...",
+        textoPrivacidad: "Acepto que mi respuesta sea almacenada para fines de evaluación y mejora del servicio.",
+        btnEnviar: "Enviar opinión 🍓",
+        btnComentarios: "💬 Ver Opiniones",
+        alertaExito: "¡Gracias por responder la encuesta! 🍓 Tu opinión ha sido registrada."
     },
     en: {
-        titulo: "Customer Feedback 🍓",
-        subtitulo: "Here you can see what people think about their experience at Liva Fresas.",
-        btnVolver: "📋 Back to survey",
-        sinOpiniones: "No opinions registered yet. Be the first one to leave feedback! 🍓",
-        cargando: "Loading feedback... 🍓",
-        anonimo: "Anonymous",
-        fechaVisita: "Visit date",
-        comida: "Food",
-        local: "Our place",
-        atencion: "Customer service",
-        general: "Overall",
-        recomendacion: "Recommendation",
-        registradoEl: "Registered on",
-        sinComentario: "No comment"
+        tituloEncuesta: "Tell us about your experience",
+        tituloVisita: "About your visit",
+        labelNombre: "Name (optional)",
+        phNombre: "Type your name...",
+        labelFecha: "Visit date",
+        tituloComida: "Food",
+        preguntaComida: "How would you rate the quality of our products?",
+        tituloLocal: "Our place",
+        preguntaLocal: "How would you rate the atmosphere, cleanliness, and comfort?",
+        tituloAtencion: "Customer service",
+        preguntaAtencion: "How would you rate the friendliness and speed of our service?",
+        tituloGeneral: "Overall experience",
+        preguntaGeneral: "Overall, how was your experience at Liva Fresas?",
+        tituloNps: "Recommendation",
+        preguntaNps: "How likely are you to recommend Liva Fresas to someone else?",
+        tituloComentario: "Tell us more",
+        labelComentario: "Is there anything else you would like to tell us?",
+        phComentario: "Type your feedback here...",
+        textoPrivacidad: "I agree that my response may be stored for evaluation and service improvement purposes.",
+        btnEnviar: "Submit Feedback 🍓",
+        btnComentarios: "💬 View Feedback",
+        alertaExito: "Thank you for filling out the survey! 🍓 Your feedback has been recorded."
     }
 };
 
-function convertirEstrellas(valor) {
-    let num = parseInt(valor) || 0;
-    let estrellas = "";
-    for (let i = 1; i <= 5; i++) {
-        estrellas += (i <= num) ? "★" : "☆";
+let idiomaActual = "es";
+
+function cambiarIdioma(lang) {
+    idiomaActual = lang;
+    const t = traducciones[lang];
+
+    const elementos = {
+        "titulo-encuesta": t.tituloEncuesta,
+        "titulo-visita": t.tituloVisita,
+        "label-nombre": t.labelNombre,
+        "label-fecha": t.labelFecha,
+        "titulo-comida": t.tituloComida,
+        "pregunta-comida": t.preguntaComida,
+        "titulo-local": t.tituloLocal,
+        "pregunta-local": t.preguntaLocal,
+        "titulo-atencion": t.tituloAtencion,
+        "pregunta-atencion": t.preguntaAtencion,
+        "titulo-general": t.tituloGeneral,
+        "pregunta-general": t.preguntaGeneral,
+        "titulo-nps": t.tituloNps,
+        "pregunta-nps": t.preguntaNps,
+        "titulo-comentario": t.tituloComentario,
+        "label-comentario": t.labelComentario,
+        "texto-privacidad": t.textoPrivacidad,
+        "enviar": t.btnEnviar,
+        "btn-comentarios": t.btnComentarios
+    };
+
+    for (let id in elementos) {
+        let el = document.getElementById(id);
+        if (el) el.textContent = elementos[id];
     }
-    return estrellas;
+
+    let inputNombre = document.getElementById("nombre");
+    if (inputNombre) inputNombre.placeholder = t.phNombre;
+
+    let inputComentario = document.getElementById("comentario");
+    if (inputComentario) inputComentario.placeholder = t.phComentario;
 }
 
-function renderizarPagina() {
-    let t = textos[idiomaActual];
-    let contenedor = document.getElementById("contenedor-opiniones");
+document.addEventListener("DOMContentLoaded", function () {
 
-    let elemTitulo = document.getElementById("titulo-opiniones-pagina");
-    let elemSubtitulo = document.getElementById("subtitulo-opiniones-pagina");
-    let elemBtnVolver = document.getElementById("btn-comentarios");
+    const IDsCalificaciones = [
+        "calificacion-comida",
+        "calificacion-local",
+        "calificacion-atencion",
+        "calificacion-general"
+    ];
 
-    if (elemTitulo) elemTitulo.textContent = t.titulo;
-    if (elemSubtitulo) elemSubtitulo.textContent = t.subtitulo;
-    if (elemBtnVolver) elemBtnVolver.textContent = t.btnVolver;
+    IDsCalificaciones.forEach(id => {
+        const contenedor = document.getElementById(id);
+        if (!contenedor) return;
 
-    if (!contenedor) return;
-    contenedor.innerHTML = "";
+        contenedor.dataset.valor = "0";
 
-    if (!respuestasGlobales || respuestasGlobales.length === 0) {
-        contenedor.innerHTML = `
-            <div class="tarjeta-vacia">
-                <p id="texto-sin-opiniones">${t.sinOpiniones}</p>
-            </div>
-        `;
-        return;
+        for (let i = 1; i <= 5; i++) {
+            const btnEstrella = document.createElement("button");
+            btnEstrella.type = "button";
+            btnEstrella.textContent = "☆";
+            btnEstrella.className = "btn-estrella";
+
+            btnEstrella.onclick = function () {
+                contenedor.dataset.valor = i;
+                const todas = contenedor.querySelectorAll(".btn-estrella");
+                todas.forEach((e, idx) => {
+                    if (idx < i) {
+                        e.textContent = "★";
+                        e.classList.add("activa");
+                    } else {
+                        e.textContent = "☆";
+                        e.classList.remove("activa");
+                    }
+                });
+            };
+
+            contenedor.appendChild(btnEstrella);
+        }
+    });
+
+    const sliderNps = document.getElementById("nps-range");
+    const valorNps = document.getElementById("nps-valor");
+    if (sliderNps && valorNps) {
+        sliderNps.oninput = function () {
+            valorNps.textContent = this.value + "%";
+        };
     }
 
-    // Mostrar opiniones de la más reciente a la más antigua
-    respuestasGlobales.slice().reverse().forEach(function(r) {
-        let tarjeta = document.createElement("div");
-        tarjeta.className = "tarjeta-opinion";
+    const btnEs = document.getElementById("espanol");
+    const btnEn = document.getElementById("ingles");
 
-        let nombreFinal = (r.nombre && r.nombre.trim() !== "" && r.nombre !== "Anónimo" && r.nombre !== "Anonymous") 
-            ? r.nombre 
-            : t.anonimo;
+    if (btnEs) btnEs.onclick = () => cambiarIdioma("es");
+    if (btnEn) btnEn.onclick = () => cambiarIdioma("en");
 
-        let comentarioFinal = (r.comentario && r.comentario.trim() !== "" && r.comentario !== "Sin comentario" && r.comentario !== "No comment")
-            ? r.comentario
-            : t.sinComentario;
+    const formulario = document.getElementById("formulario-encuesta");
+    if (formulario) {
+        formulario.onsubmit = function (event) {
+            event.preventDefault();
 
-        tarjeta.innerHTML = `
-            <div class="header-tarjeta">
-                <span class="nombre-cliente">👤 ${nombreFinal}</span>
-                <span class="fecha-visita">📅 ${t.fechaVisita}: ${r.fechaVisita || "N/A"}</span>
-            </div>
+            const nuevaRespuesta = {
+                nombre: document.getElementById("nombre")?.value.trim() || (idiomaActual === "es" ? "Anónimo" : "Anonymous"),
+                fechaVisita: document.getElementById("fecha")?.value || "N/A",
+                comida: document.getElementById("calificacion-comida")?.dataset.valor || "0",
+                local: document.getElementById("calificacion-local")?.dataset.valor || "0",
+                atencion: document.getElementById("calificacion-atencion")?.dataset.valor || "0",
+                general: document.getElementById("calificacion-general")?.dataset.valor || "0",
+                nps: (document.getElementById("nps-range")?.value || "50") + "%",
+                comentario: document.getElementById("comentario")?.value.trim() || (idiomaActual === "es" ? "Sin comentario" : "No comment"),
+                fechaRegistro: new Date().toLocaleDateString("es-ES")
+            };
 
-            <div class="detalles-calificacion">
-                <p><strong>${t.comida}:</strong> <span class="estrellas-doradas">${convertirEstrellas(r.comida)}</span></p>
-                <p><strong>${t.local}:</strong> <span class="estrellas-doradas">${convertirEstrellas(r.local)}</span></p>
-                <p><strong>${t.atencion}:</strong> <span class="estrellas-doradas">${convertirEstrellas(r.atencion)}</span></p>
-                <p><strong>${t.general}:</strong> <span class="estrellas-doradas">${convertirEstrellas(r.general)}</span></p>
-                <p><strong>${t.recomendacion}:</strong> <span class="porcentaje-badge">${r.nps || "50%"}</span></p>
-            </div>
+            let respuestasLocales = JSON.parse(localStorage.getItem("respuestasEncuesta")) || [];
+            respuestasLocales.push(nuevaRespuesta);
+            localStorage.setItem("respuestasEncuesta", JSON.stringify(respuestasLocales));
 
-            <div class="comentario-cliente">
-                <p>"${comentarioFinal}"</p>
-            </div>
+            if (URL_BASE_DATOS && URL_BASE_DATOS.startsWith("http")) {
+                fetch(URL_BASE_DATOS, {
+                    method: "POST",
+                    mode: "no-cors",
+                    headers: {
+                        "Content-Type": "text/plain;charset=utf-8"
+                    },
+                    body: JSON.stringify(nuevaRespuesta)
+                });
+            }
 
-            <div class="footer-tarjeta">
-                <span>${t.registradoEl} ${r.fechaRegistro || ""}</span>
-            </div>
-        `;
+            alert(traducciones[idiomaActual].alertaExito);
 
-        contenedor.appendChild(tarjeta);
-    });
-}
+            formulario.reset();
 
-// Función para combinar respuestas locales y de Google sin perder nada
-function combinarRespuestas(remotas, locales) {
-    let combinadas = [...remotas];
-    locales.forEach(loc => {
-        let existe = combinadas.some(rem => 
-            rem.nombre === loc.nombre && 
-            rem.comentario === loc.comentario && 
-            rem.fechaRegistro === loc.fechaRegistro
-        );
-        if (!existe) combinadas.push(loc);
-    });
-    return combinadas;
-}
-
-function cargarOpiniones() {
-    // 1. Mostrar SIEMPRE y de inmediato lo que haya en la memoria de este navegador
-    let locales = JSON.parse(localStorage.getItem("respuestasEncuesta")) || [];
-    respuestasGlobales = locales;
-    renderizarPagina();
-
-    // 2. Si la URL de Google está configurada, consultar en segundo plano
-    if (URL_BASE_DATOS && URL_BASE_DATOS !== "PEGA_AQUI_TU_URL_DE_GOOGLE" && URL_BASE_DATOS.startsWith("http")) {
-        fetch(URL_BASE_DATOS)
-            .then(res => res.json())
-            .then(data => {
-                let remotas = Array.isArray(data) ? data : [];
-                // Fusión segura: conserva los locales incluso si la hoja de Google está vacía
-                respuestasGlobales = combinarRespuestas(remotas, locales);
-                renderizarPagina();
-            })
-            .catch(() => {
-                // Si falla la red o la URL, se quedan visibles los datos locales
+            IDsCalificaciones.forEach(id => {
+                const cont = document.getElementById(id);
+                if (cont) {
+                    cont.dataset.valor = "0";
+                    cont.querySelectorAll(".btn-estrella").forEach(e => {
+                        e.textContent = "☆";
+                        e.classList.remove("activa");
+                    });
+                }
             });
+
+            if (valorNps) valorNps.textContent = "50%";
+        };
     }
-}
-
-document.addEventListener("DOMContentLoaded", function() {
-    let btnEs = document.getElementById("espanol");
-    let btnEn = document.getElementById("ingles");
-
-    if (btnEs) btnEs.onclick = () => { idiomaActual = "es"; renderizarPagina(); };
-    if (btnEn) btnEn.onclick = () => { idiomaActual = "en"; renderizarPagina(); };
-
-    cargarOpiniones();
 });
