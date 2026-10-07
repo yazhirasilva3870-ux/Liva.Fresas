@@ -1,5 +1,5 @@
 // URL de tu Google Apps Script
-const URL_BASE_DATOS = "https://script.google.com/macros/s/AKfycbzv3GdnUzT24IC99RWxCjpnbyeVe9-tU1qlzu_1WnkuKvR_oE0POheOtgUgehEPSYDP/exec"; 
+const URL_BASE_DATOS = "https://script.google.com/macros/library/d/1oC8CjnouhKSIIyI9k5wH91QUW8rUYRilo_fPlxrwUjdil1zUaJHm3grX/7"; 
 
 const traducciones = {
     es: {
