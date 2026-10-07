@@ -4,125 +4,93 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liva Fresas | Encuesta de satisfacción</title>
-    <!-- Conexión con nuestro archivo CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-    <!-- ENCABEZADO -->
     <header>
         <h1>Liva Fresas</h1>
-        <img src="logoliva.png" alt="Logo liva fresas" id="logoliva">
+        <img src="logoliva.png" alt="Logo Liva Fresas" id="logoliva">
 
-        <!-- Cambio de idioma -->
         <nav>
-    <button id="espanol">Español</button>
-    <button id="ingles">English</button>
-    <a href="comentarios.html" id="btn-comentarios">💬 Ver Opiniones</a>
-</nav>
+            <button id="espanol" type="button">Español</button>
+            <button id="ingles" type="button">English</button>
+            <a href="comentarios.html" id="btn-comentarios">💬 Ver Opiniones</a>
         </nav>
     </header>
 
-    <!-- PRESENTACIÓN -->
     <main>
         <section id="encuesta">
 
-            <h2 id="titulo-encuesta">
-                Cuéntanos sobre tu experiencia
-            </h2>
+            <h2 id="titulo-encuesta">Cuéntanos sobre tu experiencia</h2>
 
-            <form>
+            <form id="formulario-encuesta">
                 <div>
                     <h3 id="titulo-visita">Sobre tu visita</h3>
 
-                    <label for="nombre" id="label-nombre">
-                        Nombre (opcional)
-                    </label>
-                    <input type="text" id="nombre" name="nombre">
+                    <label for="nombre" id="label-nombre">Nombre (opcional)</label>
+                    <input type="text" id="nombre" name="nombre" placeholder="Escribe tu nombre...">
 
-                    <label for="fecha" id="label-fecha">
-                        Fecha de visita
-                    </label>
+                    <label for="fecha" id="label-fecha">Fecha de visita</label>
                     <input type="date" id="fecha" name="fecha">
                 </div>
 
                 <div>
                     <h3 id="titulo-comida">La comida</h3>
-                    <p id="pregunta-comida">
-                        ¿Cómo calificarías la calidad de nuestros productos?
-                    </p>
-                    <div id="calificacion-comida"></div>
+                    <p id="pregunta-comida">¿Cómo calificarías la calidad de nuestros productos?</p>
+                    <div id="calificacion-comida" class="contenedor-estrellas"></div>
                 </div>
 
                 <div>
                     <h3 id="titulo-local">El local</h3>
-                    <p id="pregunta-local">
-                        ¿Cómo calificarías el ambiente, la limpieza y la comodidad?
-                    </p>
-                    <div id="calificacion-local"></div>
+                    <p id="pregunta-local">¿Cómo calificarías el ambiente, la limpieza y la comodidad?</p>
+                    <div id="calificacion-local" class="contenedor-estrellas"></div>
                 </div>
 
                 <div>
                     <h3 id="titulo-atencion">Atención al cliente</h3>
-                    <p id="pregunta-atencion">
-                        ¿Cómo calificarías la amabilidad y rapidez de nuestra atención?
-                    </p>
-                    <div id="calificacion-atencion"></div>
+                    <p id="pregunta-atencion">¿Cómo calificarías la amabilidad y rapidez de nuestra atención?</p>
+                    <div id="calificacion-atencion" class="contenedor-estrellas"></div>
                 </div>
 
                 <div>
                     <h3 id="titulo-general">Experiencia general</h3>
-                    <p id="pregunta-general">
-                        En general, ¿cómo fue tu experiencia en Liva Fresas?
-                    </p>
-                    <div id="calificacion-general"></div>
+                    <p id="pregunta-general">En general, ¿cómo fue tu experiencia en Liva Fresas?</p>
+                    <div id="calificacion-general" class="contenedor-estrellas"></div>
                 </div>
 
                 <div>
-            <h3 id="titulo-nps">Recomendación</h3>
-
-            <p id="pregunta-nps">
-                ¿Qué tan probable es que recomiendes
-                Liva Fresas a otra persona?
-            </p>
-
-            <div id="nps-contenedor">
-                <input type="range" id="nps-range" min="0" max="100" value="50" step="5">
-                <span id="nps-valor">50%</span>
-            </div>
+                    <h3 id="titulo-nps">Recomendación</h3>
+                    <p id="pregunta-nps">¿Qué tan probable es que recomiendes Liva Fresas a otra persona?</p>
+                    <div id="nps-contenedor">
+                        <input type="range" id="nps-range" min="0" max="100" value="50" step="5">
+                        <span id="nps-valor">50%</span>
+                    </div>
+                </div>
 
                 <div>
                     <h3 id="titulo-comentario">Cuéntanos más</h3>
-                    <label for="comentario" id="label-comentario">
-                        ¿Hay algo que quieras contarnos?
-                    </label>
-                    <textarea id="comentario" name="comentario" rows="5"></textarea>
+                    <label for="comentario" id="label-comentario">¿Hay algo que quieras contarnos?</label>
+                    <textarea id="comentario" name="comentario" rows="5" placeholder="Escribe tu opinión aquí..."></textarea>
                 </div>
 
                 <div>
                     <label>
                         <input type="checkbox" id="privacidad" required>
-                        <span id="texto-privacidad">
-                            Acepto que mi respuesta sea almacenada para fines de evaluación y mejora del servicio.
-                        </span>
+                        <span id="texto-privacidad">Acepto que mi respuesta sea almacenada para fines de evaluación y mejora del servicio.</span>
                     </label>
                 </div>
 
-                <button type="submit" id="enviar">
-                    Enviar opinión 🍓
-                </button>
+                <button type="submit" id="enviar">Enviar opinión 🍓</button>
             </form>
 
         </section>
     </main>
 
-    <!-- PIE DE PÁGINA -->
     <footer>
         <p>© 2026 Liva Fresas</p>
     </footer>
 
-    <!-- Conexión con el archivo JavaScript -->
     <script src="java.js"></script>
 </body>
 </html>
