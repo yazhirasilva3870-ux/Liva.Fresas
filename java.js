@@ -1,5 +1,5 @@
 // URL de tu Google Apps Script (reemplázala con la nueva URL que termina en /exec)
-const URL_BASE_DATOS = "AQUÍ_PEGAS_TU_NUEVA_URL_QUE_TERMINA_EN_EXEC"; 
+const URL_BASE_DATOS = "https://script.google.com/macros/s/AKfycby-wIGipaJQ5WCi4YpgV2dMLx0mPWQ2ug_0fLe47i4B7mVypiC3X14ZJ2bWBOzB4CVaRQ/exec"; 
 
 const traducciones = {
     es: {
