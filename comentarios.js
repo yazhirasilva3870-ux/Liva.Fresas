@@ -1,5 +1,5 @@
-// URL de tu Google Apps Script
-const URL_BASE_DATOS = "https://script.google.com/macros/s/AKfycby-wIGipaJQ5WCi4YpgV2dMLx0mPWQ2ug_0fLe47i4B7mVypiC3X14ZJ2bWBOzB4CVaRQ/exec";
+// URL de tu Google Apps Script (reemplázala con la nueva URL que termina en /exec)
+const URL_BASE_DATOS = "AQUÍ_PEGAS_TU_NUEVA_URL_QUE_TERMINA_EN_EXEC";
 
 let idiomaActual = "es";
 let respuestasGlobales = [];
@@ -130,7 +130,6 @@ function cargarOpiniones() {
     renderizarPagina();
 
     if (URL_BASE_DATOS && URL_BASE_DATOS.startsWith("http")) {
-        // Agregamos Date.now() para forzar a consultar la nube siempre en tiempo real
         const urlSinCache = URL_BASE_DATOS + (URL_BASE_DATOS.includes("?") ? "&" : "?") + "t=" + Date.now();
 
         fetch(urlSinCache)
@@ -143,8 +142,6 @@ function cargarOpiniones() {
             .catch(error => {
                 console.error("Error al obtener opiniones de Google Sheets:", error);
             });
-    }
-}
     }
 }
 
